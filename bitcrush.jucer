@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="Bpx3S6" name="bitcrush" projectType="audioplug" jucerVersion="5.4.2">
+<JUCERPROJECT id="Bpx3S6" name="bitcrush" projectType="audioplug" jucerVersion="5.4.2"
+              bundleIdentifier="equiripple" companyName="equiripple" companyCopyright="equiripple"
+              version="0.1.0" pluginName="Bitcrush" pluginDesc="Bitcrusher"
+              pluginManufacturer="equiripple" pluginChannelConfigs="{1,1}, {2,2}"
+              aaxIdentifier="com.equiripple.bitcrush" pluginAUExportPrefix="equirippleAU">
   <MAINGROUP id="x74DHJ" name="bitcrush">
     <GROUP id="{CDBA81FE-0F78-ECC6-48D5-66BB3EFB2E59}" name="Source">
       <FILE id="B087jx" name="PluginProcessor.cpp" compile="1" resource="0"

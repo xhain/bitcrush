@@ -61,7 +61,7 @@ void BitcrushAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-    g.drawFittedText ("Austin: Bitcrusher", 0, 10, 150, 25, Justification::centred, 1);
+    g.drawFittedText ("Bitcrusher", 0, 10, 150, 50, Justification::centred, 1);
 }
 
 void BitcrushAudioProcessorEditor::resized()
