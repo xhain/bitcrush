@@ -73,6 +73,9 @@ private:
     // My Data Members
     float curSample;            // save current sample
     
+    // My functions
+    void bitCrush (AudioBuffer<float>&);
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BitcrushAudioProcessor)
 };

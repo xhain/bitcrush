@@ -12,27 +12,26 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-BitcrushAudioProcessor::BitcrushAudioProcessor()
+BitcrushAudioProcessor::BitcrushAudioProcessor():
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
+     AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
+                     #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  AudioChannelSet::stereo(), true)
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        ),
-
-            // Constructor Initialization for Parameters in APVTS
-            parameters (*this, nullptr, "PARAMETERS",
-           {
-               std::make_unique<AudioParameterFloat>("inGain", "Input Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f),
-               std::make_unique<AudioParameterFloat>("nBits", "Number of Bits", NormalisableRange<float> (0, 16, 1), 16),
-               std::make_unique<AudioParameterFloat>("outGain", "Output Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f),
-               std::make_unique<AudioParameterFloat>("clipSlope", "Clip Slope", NormalisableRange<float> (0.1f, 10.0f, 0.1f), 0.1f)
-           }
-           )
 #endif
+
+            parameters (*this, nullptr, "PARAMETERS",
+            {
+                std::make_unique<AudioParameterFloat>("inGain", "Input Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f),
+                std::make_unique<AudioParameterFloat>("nBits", "Number of Bits", NormalisableRange<float> (0, 16, 1), 16),
+                std::make_unique<AudioParameterFloat>("outGain", "Output Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f),
+                std::make_unique<AudioParameterFloat>("clipSlope", "Clip Slope", NormalisableRange<float> (0.1f, 10.0f, 0.1f), 0.1f)
+            }
+            )
 {
     inGain = parameters.getRawParameterValue ("inGain");
     nBits = parameters.getRawParameterValue ("nBits");
@@ -41,6 +40,7 @@ BitcrushAudioProcessor::BitcrushAudioProcessor()
 }
 
 BitcrushAudioProcessor::~BitcrushAudioProcessor()
+
 {
 }
 
@@ -149,10 +149,16 @@ bool BitcrushAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 void BitcrushAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
+    bitCrush(buffer);
+}
+
+void BitcrushAudioProcessor::bitCrush(AudioBuffer<float>& buffer)
+{
+    
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     
-    // Get Raw Values from Pointers
+    // get raw values from pointers & dereference
     auto inGainVal = pow (10, *inGain / 20);
     auto outGainVal = pow (10, *outGain / 20);
     auto nBitsVal = *nBits;
@@ -191,7 +197,6 @@ void BitcrushAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
         }
     }
 }
-// << - - - - - - - P R O C E S S  B L O C K - - - - - - - <<
 
 
 //==============================================================================
