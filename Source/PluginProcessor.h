@@ -63,6 +63,7 @@ public:
 private:
     // State Tree
     AudioProcessorValueTreeState parameters;
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
     // My Paramter Variables
     float* inGain = nullptr;      // scalar Input Gain var

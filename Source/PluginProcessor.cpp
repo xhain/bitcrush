@@ -23,15 +23,7 @@ BitcrushAudioProcessor::BitcrushAudioProcessor():
                      #endif
                        ),
 #endif
-
-            parameters (*this, nullptr, "PARAMETERS",
-            {
-                std::make_unique<AudioParameterFloat>("inGain", "Input Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f),
-                std::make_unique<AudioParameterFloat>("nBits", "Number of Bits", NormalisableRange<float> (0, 16, 1), 16),
-                std::make_unique<AudioParameterFloat>("outGain", "Output Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f),
-                std::make_unique<AudioParameterFloat>("clipSlope", "Clip Slope", NormalisableRange<float> (0.1f, 10.0f, 0.1f), 0.1f)
-            }
-            )
+            parameters (*this, nullptr, "PARAMETERS",createParameterLayout())
 {
     inGain = parameters.getRawParameterValue ("inGain");
     nBits = parameters.getRawParameterValue ("nBits");
@@ -45,6 +37,24 @@ BitcrushAudioProcessor::~BitcrushAudioProcessor()
 }
 
 //==============================================================================
+
+AudioProcessorValueTreeState::ParameterLayout BitcrushAudioProcessor::createParameterLayout()
+{
+    std::vector <std::unique_ptr<RangedAudioParameter>> params;
+    
+    auto inGainParam = std::make_unique<AudioParameterFloat>("inGain", "Input Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f);
+    auto nBitsParam = std::make_unique<AudioParameterFloat>("nBits", "Number of Bits", NormalisableRange<float> (0, 16, 1), 16);
+    auto outGainParam = std::make_unique<AudioParameterFloat>("outGain", "Output Gain", NormalisableRange<float> (-60.0f, 6.0f, 0.1f), 0.0f);
+    auto clipSlopeParam = std::make_unique<AudioParameterFloat>("clipSlope", "Clip Slope", NormalisableRange<float> (0.1f, 10.0f, 0.1f), 0.1f);
+    
+    params.push_back(std::move(inGainParam));
+    params.push_back(std::move(nBitsParam));
+    params.push_back(std::move(outGainParam));
+    params.push_back(std::move(clipSlopeParam));
+    
+    return { params.begin(), params.end() };
+}
+
 const String BitcrushAudioProcessor::getName() const
 {
     return JucePlugin_Name;
